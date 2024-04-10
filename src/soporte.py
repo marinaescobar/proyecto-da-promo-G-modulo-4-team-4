@@ -50,6 +50,11 @@ def open_csv(rute):
   """
   # Read the CSV file using pandas.read_csv
   df = pd.read_csv(rute)
+  
+  # Si al cargar el dataframe se creó una columna de unnamed, la elimina
+  if 'Unnamed: 0' in df.columns:
+      df.drop('Unnamed: 0', axis = 1, inplace=True)
+      
   # Return the DataFrame
   return df
 # %%
@@ -119,5 +124,7 @@ def explore_columns(df):
        print(f"Total nulls: {df[column].isnull().sum()}")
        # Print the number of duplicate values in the column
        print(f"Duplicates: {df[column].duplicated().sum()}")
+       
+       print(f"Unique values count: {df[column].value_counts()}")
        # Add a space for readability
        print("__________________________")
