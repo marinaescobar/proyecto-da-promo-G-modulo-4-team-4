@@ -1,19 +1,17 @@
 
 #%%
 from src import soporte as sp
+import pandas as pd
 
 # %%
 df = sp.open_csv('files/finanzas-hotel-bookings.csv')
 # %%
 sp.explore_df(df)
-#%%
-df_sin_noche = df.loc[(df['stays_in_weekend_nights'] == 0) & (df['stays_in_week_nights'] == 0), :]
-#%%
-sp.explore_columns(df_sin_noche)
-
 # %%
-df_cancelados = df.loc[(df['is_canceled'] == True), 'company']
-
-df_cancelados.head()
-
+#%%
+sp.df_information(df)
+#%%
+sp.explore_columns(df)
+#%%
+df = sp.transformacion(df)
 # %%
