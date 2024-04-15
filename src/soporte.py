@@ -147,6 +147,8 @@ def limpieza (df):
     "November": 11,
     "December": 12
     }
+
+    df['arrival_date_month'] = df['arrival_date_month'].map(meses)
     
     country_codes = {
     'PRT': 'Portugal',
@@ -313,8 +315,41 @@ def limpieza (df):
     'SLV': 'El Salvador',
     'LAO': 'Laos'
     }
+
+    df['country'] = df['country'].map(country_codes)
+
+    lista_integers = ['lead_time',
+                      'arrival_date_year', 
+                      'arrival_date_week_number', 
+                      'arrival_date_day_of_month', 
+                      'stays_in_weekend_nights', 
+                      'stays_in_week_nights', 
+                      'adults', 
+                      'children', 
+                      'babies', 
+                      'is_repeated_guest', 
+                      'previous_bookings_not_canceled', 
+                      'previous_cancellations', 
+                      'booking_changes',
+                      'days_in_waiting_list',
+                      'required_car_parking_spaces',
+                      'total_of_special_requests']
     
-    # ISO paises
+    df["reservation_status_date"] = df["reservation_status_date"].apply(lambda x:x.replace(" 00:00:00","") if isinstance(x, str) else x)  
+    
+    df['arrival_date_year'] = df.apply(lambda row: row['reservation_status_date'].split("-")[0] if pd.isnull(row['arrival_date_year']) and pd.notnull(row['reservation_status_date']) else row['arrival_date_year'], axis=1)
+
+    # Convertir a integer aquellas columnas de la lista sin nulos
+    for column in lista_integers:
+        
+        if df[column].isnull().sum() == 0:
+            df[column] = df[column].astype(int)
+        
+        else:
+            df[column] = df[column].apply(lambda x: np.round(float(x), 0) if pd.notna(x) else x)
+    
+   
+
     
     
     return df
@@ -337,4 +372,28 @@ def eliminacion_nulos (df):
 
 
 def imputacion_nulos (df):
+
+    n_dia_medio = np.round(df["arrival_date_day_of_month"].mean(),0)
+
+    df["arrival_date_day_of_month"] = df["arrival_date_day_of_month"].fillna(n_dia_medio)
+    
+    semanas_a_mes = {
+        1.: 1,
+        2.: 1,
+        3.: 1,
+        4.: 1,
+        5.: 2,
+        6.: 2,
+        7.: 2,
+        8.: 2,
+        9.: 3,
+        10.: 3,
+        11.: 3,
+        12.: 3,
+        13.: 4,
+        14.: 4
+    }
+
+    
+    df['arrival_date_month'] = df.apply(lambda row: semanas_a_mes[row['arrival_date_week_number']] if pd.isnull(row['arrival_date_month']) and pd.notnull(row['arrival_date_week_number']) else row['arrival_date_month'], axis=1)
     return df
