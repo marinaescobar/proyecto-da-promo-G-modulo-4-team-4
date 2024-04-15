@@ -348,9 +348,6 @@ def limpieza (df):
         else:
             df[column] = df[column].apply(lambda x: np.round(float(x), 0) if pd.notna(x) else x)
     
-   
-
-    
     
     return df
 
@@ -373,27 +370,98 @@ def eliminacion_nulos (df):
 
 def imputacion_nulos (df):
 
-    n_dia_medio = np.round(df["arrival_date_day_of_month"].mean(),0)
+    n_dia_medio = np.round(df["arrival_date_day_of_month"].median(),0)
 
     df["arrival_date_day_of_month"] = df["arrival_date_day_of_month"].fillna(n_dia_medio)
     
     semanas_a_mes = {
-        1.: 1,
-        2.: 1,
-        3.: 1,
-        4.: 1,
-        5.: 2,
-        6.: 2,
-        7.: 2,
-        8.: 2,
-        9.: 3,
-        10.: 3,
-        11.: 3,
-        12.: 3,
-        13.: 4,
-        14.: 4
-    }
-
+        1.0: 1,
+        2.0: 1,
+        3.0: 1,
+        4.0: 1,
+        5.0: 1,
+        6.0: 2,
+        7.0: 2,
+        8.0: 2,
+        9.0: 2,
+        10.0: 3,
+        11.0: 3,
+        12.0: 3,
+        13.0: 3,
+        14.0: 3,
+        15.0: 4,
+        16.0: 4,
+        17.0: 4,
+        18.0: 4,
+        19.0: 5,
+        20.0: 5,
+        21.0: 5,
+        22.0: 5,
+        23.0: 5,
+        24.0: 6,
+        25.0: 6,
+        26.0: 6,
+        27.0: 6,
+        28.0: 7,
+        29.0: 7,
+        30.0: 7,
+        31.0: 7,
+        32.0: 7,
+        33.0: 8,
+        34.0: 8,
+        35.0: 8,
+        36.0: 8,
+        37.0: 9,
+        38.0: 9,
+        39.0: 9,
+        40.0: 9,
+        41.0: 10,
+        42.0: 10,
+        43.0: 10,
+        44.0: 10,
+        45.0: 11,
+        46.0: 11,
+        47.0: 11,
+        48.0: 11,
+        49.0: 12,
+        50.0: 12,
+        51.0: 12,
+        52.0: 12
+        }
     
-    df['arrival_date_month'] = df.apply(lambda row: semanas_a_mes[row['arrival_date_week_number']] if pd.isnull(row['arrival_date_month']) and pd.notnull(row['arrival_date_week_number']) else row['arrival_date_month'], axis=1)
+    columns_to_0 = ['arrival_date_month', 'children', 'previous_cancellations', 'is_repeated_guest', 'reservation_status_date']
+    columns_to_undefined = ['meal','country', 'market_segment' , 'distribution_channel', 'agent', 'reserved_room_type', 'assigned_room_type', 'customer_type']
+    
+    for column in columns_to_0:
+        df[column].fillna(0, inplace=True)
+        
+    for column in columns_to_undefined:
+        df[column].fillna('Undefined', inplace=True)
+    
+    df['arrival_date_week_number'].fillna(df['arrival_date_week_number'].median(), inplace=True)
+    
+    df['arrival_date_month'] = df.apply(lambda x: semanas_a_mes[x['arrival_date_week_number']] if x['arrival_date_week_number'] != 0 and x['arrival_date_month'] == 0 else x['arrival_date_month'], axis=1)
+    
+    df['arrival_date_year'].fillna(df['arrival_date_year'].median(), inplace=True)
+    
+    df['reservation_status_date'] = df.apply(lambda x : f"{int(x['arrival_date_year'])}-{int(x['arrival_date_month'])}-{int(x['arrival_date_day_of_month'])}" if x['reservation_status_date'] == 0 else x['reservation_status_date'], axis=1)
+    
+    
+    return df
+    
+    
+def limpieza_fase2 (df):
+    
+    df['is_repeated_guest'] = df['is_repeated_guest'].apply(lambda x : False if x == 0 else True)
+    
+    columns_to_int = ['arrival_date_year', 'arrival_date_month', 'arrival_date_week_number', 'arrival_date_day_of_month', 'children', 'previous_cancellations']
+    
+    for column in columns_to_int:
+        df[column] = df[column].astype(int)
+    
+    df['arrival_date'] = df.apply(lambda x : f"{x['arrival_date_year']}-{x['arrival_date_month']}-{x['arrival_date_day_of_month']}", axis=1)
+
+    df.drop(['arrival_date_year', 'arrival_date_month', 'arrival_date_day_of_month'], axis=1, inplace=True)
+    
+    
     return df
