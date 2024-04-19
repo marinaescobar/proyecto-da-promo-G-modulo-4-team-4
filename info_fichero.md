@@ -2,7 +2,7 @@
 
 
 - Cambiar ISO por nombre país ✅
-- Año llegada poner en formato fecha
+- Año llegada poner en formato fecha ✅
 - Lead_time tine que ser un int ✅ 
 - hacer un concat de fecha con arrival_date (day,month, year) formato Año, mes, día
 - Cortesía. Si/no ✅
@@ -12,7 +12,7 @@
 - Stay in weekend nights, están en en float, hay que cambiarlo
 - Stay in week nights, están como float
 - Adults revisar lo que está a cero
-- Is_repited_guest cambiar a true & false
+- *Is_repited_guest cambiar a true & false*
 - Previos cancelation: tiene muchos nulos
 - Para las categóricas con nulos, utilizar undefined
 - Agente y company convertir a object 
