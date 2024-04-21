@@ -10,7 +10,7 @@ Para facilitar el análisis de datos, hemos creado una ETL con funciones dedicad
 ## VALORES:
 **arrival_date_month** convertir los nombres de los meses en números.
 **country**convertir los códigos de país en nombres de país.
-**adr** convertimos adr negativos.
+**adr** algunos valores son negativos.
 **reservation_status_date** quitar las horas de los datos.
 **"arrival_date_day_of_month"** Cambiar el número de semana a su correspondiente mes.
 **arrival_date_year**. Actualizar la columna utilizando la información de la columna reservation_status_date si arrival_date_year es nula y reservation_status_date no lo es.
