@@ -12,10 +12,11 @@ El objetivo de este proyecto es realizar un análisis detallado de las cancelaci
 ## Estructura del Repositorio
 El repositorio está organizado en varias carpetas:
 
-- **Imágenes**: Contiene los gráficos y visualizaciones creados durante el análisis de datos.
 - **files**: Archivos CSV originales y limpios utilizados en el análisis.
+- **src**: Contiene el código fuente de la ETL desarrollada para limpiar y transformar los datos utilizados en este proyecto.
 - **Notebooks**: Contiene los archivos de código en formato de Jupyter Notebook.
 - **Documentación**: Contiene la explicación del trabajo realizado y las conclusiones, sin incluir código.
+- **Imágenes**: Contiene los gráficos y visualizaciones creados durante el análisis de datos.
 
 ## Tecnologías Utilizadas
 - Python: Se utilizó Python como lenguaje principal de programación.
