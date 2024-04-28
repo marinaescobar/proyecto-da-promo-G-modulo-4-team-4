@@ -105,12 +105,11 @@ crear_tabla_clients = """CREATE TABLE IF NOT EXISTS `NomeRiu_Hotels`.`Client_det
 
 insertar_client = """INSERT INTO Client_details (
                                                 country, 
-                                                agent_id, 
                                                 market_segment, 
                                                 distribution_channel, 
                                                 customer_type, 
                                                 is_repeated_guest, 
                                                 previous_booking_not_canceled,
-                                                previous_cancellations,
+                                                previous_cancellations
                                                 ) 
-                                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+                                                VALUES (%s, %s, %s, %s, %s, %s, %s)"""
